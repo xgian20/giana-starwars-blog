@@ -6,6 +6,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				description: "", 
 				properties: {}
 			},
+			planetDetails: {
+				description: "", 
+				properties: {}
+			},
+			vehicleDetails: {
+				description: "", 
+				properties: {}
+			},
 			vehicles: [],
 			planets: [],
 			favorites: []
@@ -14,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getPeople: async () => {
 				const response = await fetch("https://www.swapi.tech/api/people/");
 				if(!response.ok) {
-					throw new error(response.status, response.statusText);
+					throw new Error(response.status, response.statusText); 
 				}
 				const data = await response.json();
 				setStore({people: data.results});
@@ -23,7 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getPersonDetails: async (id) => {
 				const response = await fetch(`https://www.swapi.tech/api/people/${id}`);
 				if(!response.ok) {
-					throw new Error(response.status, response.statusText)
+					throw new Error(response.status, response.statusText); 
 				}
 				const data = await response.json();
 				const personDetails = {
@@ -36,27 +44,58 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getVehicles: async () => {
 				const response = await fetch("https://www.swapi.tech/api/vehicles/");
 				if(!response.ok) {
-					throw new error(response.status, response.statusText)
+					throw new Error(response.status, response.statusText); 
 				}
 				const data = await response.json();
 				setStore({vehicles: data.results})
 			},
 
-			getVehicleDetails: () => {},
+			getVehicleDetails: async (id) => {
+				const response = await fetch(`https://www.swapi.tech/api/vehicles/${id}`);
+				if(!response.ok) {
+					throw new Error(response.status, response.statusText); 
+				}
+				const data = await response.json();
+				const vehicleDetails = {
+					description: data.result.description, 
+					properties: {...data.result.properties}
+				}
+				setStore({vehicleDetails: vehicleDetails});
+			},
+
 			getPlanets: async () => {
 				const response = await fetch("https://www.swapi.tech/api/planets/");
 				if(!response.ok) {
-					throw new error(response.status, response.statusText)
+					throw new Error(response.status, response.statusText); 
 				}
 				const data = await response.json();
 				setStore({planets: data.results})
 			},
 
-			getPlanetDetails: () => {},
-			addFavorite: () => {},
-			removeFavorite: () => {}
+			getPlanetDetails: async (id) => {
+				const response = await fetch(`https://www.swapi.tech/api/planets/${id}`);
+				if(!response.ok) {
+					throw new Error(response.status, response.statusText); 
+				}
+				const data = await response.json();
+				const planetDetails = {
+					description: data.result.description,
+					properties: {...data.result.properties}
+				}
+				setStore({planetDetails: planetDetails});
+			},
+
+			addFavorite: (item) => {
+				const store = getStore();
+				setStore({favorites: [...store.favorites, item]}); 
+			},
+
+			removeFavorite: (item) => {
+				const store = getStore();
+				const newFavorites = store.favorites.filter((x) => x !== item); 
+				setStore({favorites: newFavorites}); 
 			}
-			
+		}
 	};
 };
 

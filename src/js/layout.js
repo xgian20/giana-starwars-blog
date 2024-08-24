@@ -7,6 +7,8 @@ import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import PersonDetails from "./views/PersonDetails.jsx";
+import PlanetDetails from "./views/PlanetDetails.jsx";
+import VehicleDetails from "./views/VehicleDetails.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -30,8 +32,8 @@ const Layout = () => {
 							saved page
 						*/}
 						<Route path="/people/:id" element={<PersonDetails />} />
-						{/* <Route path="/planet/:id" element={<PlanetDetails />} />
-						<Route path="/vehicles/:id" element={<VehicleDetails />} /> */}
+						<Route path="/planets/:id" element={<PlanetDetails />} />
+						<Route path="/vehicles/:id" element={<VehicleDetails />} />
 
 
 						<Route path="/demo" element={<Demo />} />
